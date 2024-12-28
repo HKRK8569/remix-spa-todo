@@ -1,0 +1,50 @@
+{
+  "name": "biome-spa-todo",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "build": "remix vite:build",
+    "dev": "remix vite:dev",
+    "preview": "vite preview",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "typecheck": "tsc",
+    "lint:code": "biome lint",
+    "lint:style": "biome format",
+    "fix:code": "biome lint --apply",
+    "fix:style": "biome format --write"
+  },
+  "dependencies": {
+    "@remix-run/node": "^2.15.2",
+    "@remix-run/react": "^2.15.2",
+    "isbot": "^4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@remix-run/dev": "^2.15.2",
+    "@remix-run/testing": "^2.15.2",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "autoprefixer": "^10.4.19",
+    "happy-dom": "^16.0.1",
+    "lefthook": "^1.10.1",
+    "msw": "^2.7.0",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.1.6",
+    "vite": "^5.1.0",
+    "vite-tsconfig-paths": "^4.2.1",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
