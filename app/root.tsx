@@ -36,7 +36,3 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   return <Outlet />;
 }
-
-export function HydrateFallback() {
-  return <p>Loading...</p>;
-}
