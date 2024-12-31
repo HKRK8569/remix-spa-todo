@@ -1,5 +1,5 @@
-import type { MetaFunction } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import { Form, redirect, useActionData, useLoaderData } from "@remix-run/react";
 import { Pencil, Trash } from "lucide-react";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
@@ -27,8 +27,30 @@ export const clientLoader = async () => {
   };
 };
 
+export const clientAction = async ({ request }: LoaderFunctionArgs) => {
+  const formData = await request.formData();
+  const title = formData.get("title");
+  if (!title) {
+    return Response.json({
+      errors: {
+        title: "title is not found",
+      },
+    });
+  }
+  await fetch("http://localhost:3000/todos", {
+    method: "POST",
+    body: JSON.stringify({
+      title: title,
+      isDone: false,
+    }),
+  });
+  return redirect("/");
+};
+
 export default function Index() {
+  const [title, setTitle] = useState("");
   const { todos } = useLoaderData<typeof clientLoader>();
+  const actionData = useActionData<typeof clientAction>();
 
   return (
     <div className="max-w-[720px] mx-auto">
@@ -41,10 +63,25 @@ export default function Index() {
           />
         </div>
       </div>
-      <form className="flex gap-x-2">
-        <Input />
-        <Button>追加</Button>
-      </form>
+      <Form
+        onSubmit={() => {
+          setTitle("");
+        }}
+        method="POST"
+        className="flex gap-x-2"
+      >
+        <Input
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+          value={title}
+          name="title"
+        />
+        <Button type="submit">追加</Button>
+      </Form>
+      {actionData?.errors?.title && (
+        <p className="text-red-500">タイトルを入力してください</p>
+      )}
       <hr className=" border-t border-gray-300 my-4" />
       {todos.map((todo) => {
         return <TodoItem key={todo.id} todo={todo} />;
