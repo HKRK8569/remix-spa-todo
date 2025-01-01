@@ -117,7 +117,15 @@ const TodoItem = ({ todo }: TodoItemProps) => {
       </div>
       <div className="flex items-center w-16">
         <Pencil onClick={endEdit} className="mr-4 hover:opacity-50" />
-        <Trash className="hover:opacity-50" />
+        <Form
+          method="POST"
+          className="flex items-center"
+          action={`/todos/${todo.id}/destroy`}
+        >
+          <button type="submit">
+            <Trash className="hover:opacity-50" />
+          </button>
+        </Form>
       </div>
     </div>
   ) : (
