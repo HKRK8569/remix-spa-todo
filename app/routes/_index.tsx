@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { Form, redirect, useActionData, useLoaderData } from "@remix-run/react";
 import { Pencil, Trash } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
@@ -105,9 +105,9 @@ const TodoItem = ({ todo }: TodoItemProps) => {
     setEdit(false);
   };
   return isEdit ? (
-    <form key={todo.id} className="flex mb-4 justify-between p-2 bg-gray-100">
+    <div key={todo.id} className="flex mb-4 justify-between p-2 bg-gray-100">
       <div className="flex items-center mr-2 flex-grow">
-        <Checkbox checked={todo.isDone} className="mr-2" />
+        <FormCheckbox id={todo.id} isDone={todo.isDone} />
         <Input
           onChange={(event) => {
             setTitle(event.target.value);
@@ -119,11 +119,11 @@ const TodoItem = ({ todo }: TodoItemProps) => {
         <Pencil onClick={endEdit} className="mr-4 hover:opacity-50" />
         <Trash className="hover:opacity-50" />
       </div>
-    </form>
+    </div>
   ) : (
     <div key={todo.id} className="flex mb-4 justify-between p-2 bg-gray-100">
       <div className="flex items-center mr-2 flex-grow">
-        <Checkbox checked={todo.isDone} className="mr-2" />
+        <FormCheckbox id={todo.id} isDone={todo.isDone} />
         <p className="h-10 flex items-center">{title}</p>
       </div>
       <div className="flex items-center w-16">
@@ -139,5 +139,34 @@ const TodoItem = ({ todo }: TodoItemProps) => {
         </Form>
       </div>
     </div>
+  );
+};
+
+type FormCheckboxProps = {
+  id: number;
+  isDone: boolean;
+};
+
+const FormCheckbox = ({ id, isDone }: FormCheckboxProps) => {
+  const submitRef = useRef<HTMLButtonElement>(null);
+
+  return (
+    <Form action={`/todos/${id}/update`} method="POST">
+      <Checkbox
+        onClick={() => {
+          if (submitRef.current) {
+            submitRef.current.click();
+          }
+        }}
+        checked={isDone}
+        className="mr-2"
+      />
+      <button
+        ref={submitRef}
+        value={isDone ? "false" : "true"}
+        name="is-done"
+        type="submit"
+      />
+    </Form>
   );
 };
