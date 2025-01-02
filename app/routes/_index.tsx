@@ -116,7 +116,15 @@ const TodoItem = ({ todo }: TodoItemProps) => {
         />
       </div>
       <div className="flex items-center w-16">
-        <Pencil onClick={endEdit} className="mr-4 hover:opacity-50" />
+        <Form
+          onSubmit={endEdit}
+          action={`/todos/${todo.id}/update`}
+          method="POST"
+        >
+          <button value={title} name="title" type="submit">
+            <Pencil className="mr-4 hover:opacity-50" />
+          </button>
+        </Form>
         <Form
           method="POST"
           className="flex items-center"
